@@ -122,6 +122,7 @@ public class EksamenTest {
 
         try {
             s = tre.toStringPostOrder();
+            System.out.println("oppg 3c: " + s);
             if (!s.equals("[2, 4, 5, 3, 1, 7, 9, 8, 6, 11, 13, 12, 14, 10]")) {
                 antallFeil++;
                 System.out.println("Oppgave 3d: Feil i toStringPostOrder()! Men feilen kan");

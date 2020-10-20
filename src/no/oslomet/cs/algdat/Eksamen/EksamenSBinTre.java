@@ -1,6 +1,8 @@
 package no.oslomet.cs.algdat.Eksamen;
 
 
+import org.w3c.dom.Node;
+
 import java.util.*;
 
 public class EksamenSBinTre<T> {
@@ -23,6 +25,7 @@ public class EksamenSBinTre<T> {
             this(verdi, null, null, forelder);
         }
 
+
         @Override
         public String toString() {
             return "" + verdi;
@@ -43,25 +46,7 @@ public class EksamenSBinTre<T> {
         comp = c;
     }
 
-    public boolean inneholder(T verdi) {
-        if (verdi == null) return false;
-
-        Node<T> p = rot;
-
-        while (p != null) {
-            int cmp = comp.compare(verdi, p.verdi);
-            if (cmp < 0) p = p.venstre;
-            else if (cmp > 0) p = p.høyre;
-            else return true;
-        }
-
-        return false;
-    }
-
-    public int antall() {
-        return antall;
-    }
-
+    //Ferdigkodet//////////
     public String toStringPostOrder() {
         if (tom()) return "[]";
 
@@ -76,9 +61,6 @@ public class EksamenSBinTre<T> {
         return s.toString();
     }
 
-    public boolean tom() {
-        return antall == 0;
-    }
 
     //// OPPGAVE 1 ////////////////////////////////////////////////////////
     //Følger programkode 5.2.3 a)
@@ -95,20 +77,71 @@ public class EksamenSBinTre<T> {
         }
 
         // a er nå null dvs. ute av treet, b er den siste vi passerte
-        a = new Node<>(verdi);
-        if(a == null){
+        a = new Node<>(verdi, null);
+        if(b == null){
             rot = a;
+
         }
         else if (tmp < 0 ){
             a.venstre = a;
+
         }
         else {
             b.høyre = a;
         }
         antall++;
+        endringer++;
         return true;
     }
+    //// OPPGAVE 1 SLUTT //////////////////////////////////////////////////
 
+    //// OPPGAVE 2 ///////////////////////////////////////////////////////
+
+    //Ferdigkodet//////////
+    public boolean tom() { //Ferdigkodet
+        return antall == 0;
+    }
+    //Ferdigkodet//////////
+    public boolean inneholder(T verdi) { //Ferdigkodet
+        if (verdi == null) return false;
+
+        Node<T> p = rot;
+
+        while (p != null) {
+            int cmp = comp.compare(verdi, p.verdi);
+            if (cmp < 0) p = p.venstre;
+            else if (cmp > 0) p = p.høyre;
+            else return true;
+        }
+        return false;
+    }
+    //Ferdigkodet//////////
+    public int antall() { //Ferdigkodet
+        return antall;
+    }
+    public int antall(T verdi) {
+        throw new UnsupportedOperationException("Ikke kodet ennå!");
+    }
+
+    //// OPPGAVE 2 SLUTT /////////////////////////////////////////////////
+
+    //// OPPGAVE 3 //////////////////////////////////////////////////////
+    private static <T> Node<T> førstePostorden(Node<T> p) {
+        throw new UnsupportedOperationException("Ikke kodet ennå!");
+    }
+
+    private static <T> Node<T> nestePostorden(Node<T> p) {
+        throw new UnsupportedOperationException("Ikke kodet ennå!");
+    }
+    //// OPPGAVE 3 SLUTT ///////////////////////////////////////////////
+
+    //// OPPGAVE 4 ////////////////////////////////////////////////////
+
+
+    //// OPPGAVE 4 SLUTT /////////////////////////////////////////////
+    public void postorden(Oppgave<? super T> oppgave) {
+        throw new UnsupportedOperationException("Ikke kodet ennå!");
+    }
     public boolean fjern(T verdi) {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
@@ -117,25 +150,15 @@ public class EksamenSBinTre<T> {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
-    public int antall(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
+
 
     public void nullstill() {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
-    private static <T> Node<T> førstePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
 
-    private static <T> Node<T> nestePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
 
-    public void postorden(Oppgave<? super T> oppgave) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
+
 
     public void postordenRecursive(Oppgave<? super T> oppgave) {
         postordenRecursive(rot, oppgave);
