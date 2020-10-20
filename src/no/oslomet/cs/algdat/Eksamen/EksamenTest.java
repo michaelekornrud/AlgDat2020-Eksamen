@@ -113,6 +113,7 @@ public class EksamenTest {
         s = tre.toStringPostOrder();
         if (!s.equals("[10]")) {
             antallFeil++;
+            System.out.println("oppg 3c: " + s);
             System.out.println("Oppgave 3c: Feil i toStringPostOrder() for et tre med kun en verdi!");
         }
 
@@ -122,9 +123,10 @@ public class EksamenTest {
 
         try {
             s = tre.toStringPostOrder();
-            System.out.println("oppg 3c: " + s);
+
             if (!s.equals("[2, 4, 5, 3, 1, 7, 9, 8, 6, 11, 13, 12, 14, 10]")) {
                 antallFeil++;
+
                 System.out.println("Oppgave 3d: Feil i toStringPostOrder()! Men feilen kan");
                 System.out.println("ligge i leggInn() eller i nesteInorden().");
             }
