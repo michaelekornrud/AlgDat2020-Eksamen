@@ -125,6 +125,24 @@ public class EksamenSBinTre<T> {
         int count = 0;
         Node<T> current = rot;
 
+        if (verdi == null) {
+            return 0;
+        }
+
+        while (current != null){
+            int compare = comp.compare(verdi, current.verdi);
+            if(compare < 0){
+                current = current.venstre;
+            }
+            else if(compare > 0){
+                current = current.høyre;
+            }
+            else {
+                count++;
+                current = current.høyre;
+            }
+        }
+        return count;
         //Ide 3: ///////
         /*if (current == null) {
             return 0;
@@ -139,15 +157,16 @@ public class EksamenSBinTre<T> {
             return sum;*/
 
             //Ide 2: ////////
-       /* int compare = comp.compare(verdi, rot.verdi);
+       /*int compare = comp.compare(verdi, rot.verdi);
         System.out.println("Value: " + verdi + " rot: " + rot.verdi +" Compare: " + compare);
 
         while (current != null){
             if(compare == 0) {
                 count++;
+                if (verdi > current.verdi){
+
+                }
                 Node<T> tmp = rot;
-
-
             }
             else if (compare < 0){
                 current = current.høyre;
@@ -183,7 +202,9 @@ public class EksamenSBinTre<T> {
 
         return count; //Returnerer telleren. */
 
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //Ide 4: /////
+
+
         }
 
 
