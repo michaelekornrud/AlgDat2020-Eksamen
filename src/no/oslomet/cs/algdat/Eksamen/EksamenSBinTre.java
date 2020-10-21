@@ -65,8 +65,6 @@ public class EksamenSBinTre<T> {
     //// OPPGAVE 1 ////////////////////////////////////////////////////////
     //Følger programkode 5.2.3 a)
     public boolean leggInn(T verdi) {
-        Objects.requireNonNull(verdi, "Nullverdier ikke tillat!");
-
         Node<T> a = rot, b =  null; //a starter i roten, b = null
         int tmp = 0;                //hjelpevariabel
 
@@ -83,24 +81,25 @@ public class EksamenSBinTre<T> {
 
         }
         else if (tmp < 0 ){
-            a.venstre = a;
+            b.venstre = a;
 
         }
         else {
             b.høyre = a;
         }
         antall++;
-        endringer++;
+        //endringer++;
         return true;
     }
+
     //// OPPGAVE 1 SLUTT //////////////////////////////////////////////////
 
     //// OPPGAVE 2 ///////////////////////////////////////////////////////
-
     //Ferdigkodet//////////
     public boolean tom() { //Ferdigkodet
         return antall == 0;
     }
+
     //Ferdigkodet//////////
     public boolean inneholder(T verdi) { //Ferdigkodet
         if (verdi == null) return false;
@@ -115,106 +114,72 @@ public class EksamenSBinTre<T> {
         }
         return false;
     }
+
     //Ferdigkodet//////////
     public int antall() { //Ferdigkodet
         return antall;
     }
+
     public int antall(T verdi) {
-        //antall (t verdi)
-        Objects.requireNonNull(verdi, "Null-verdier kan ikke søkes etter!");
-        int count = 0;
-        Node<T> current = rot;
+        if (antall() > 0 && inneholder(verdi)) {
+            int count = 0;
+            Node<T> current = rot;
 
-        if (verdi == null) {
-            return 0;
-        }
-
-        while (current != null){
-            int compare = comp.compare(verdi, current.verdi);
-            if(compare < 0){
-                current = current.venstre;
-            }
-            else if(compare > 0){
-                current = current.høyre;
-            }
-            else {
-                count++;
-                current = current.høyre;
-            }
-        }
-        return count;
-        //Ide 3: ///////
-        /*if (current == null) {
-            return 0;
-        }
-        else {
-            Node<T> tmp = new Node<>(verdi, null);
-            T left = tmp.venstre.verdi;
-            T right = tmp.høyre.verdi;
-            int sum = 1 + antall(left) + antall(right);
-            System.out.println("Sum: " + sum);
-
-            return sum;*/
-
-            //Ide 2: ////////
-       /*int compare = comp.compare(verdi, rot.verdi);
-        System.out.println("Value: " + verdi + " rot: " + rot.verdi +" Compare: " + compare);
-
-        while (current != null){
-            if(compare == 0) {
-                count++;
-                if (verdi > current.verdi){
-
+            //Forsøk 1: fungerer delvis
+            while (current != null) {
+                int compare = comp.compare(verdi, current.verdi);
+                if (compare == 0){
+                    count++;
+                    current = current.høyre;
                 }
-                Node<T> tmp = rot;
+                else if (compare > 0){
+                    current = current.høyre;
+                }
+                else {
+                    current = current.venstre;
+                }
             }
-            else if (compare < 0){
-                current = current.høyre;
-            }
-            else if(compare > 0){
-                current = current.venstre;
-            }
-            else{
-                return 0;
-            }
+            return count;
         }
-        return count;*/
-
-            //Ide 1: ////
-        /*
-        //Tilfelle 1 : listen er tom.
-        if (tom()){
+        else{
             return 0;
         }
-        //Tilfelle 2 : Dersom root har et venste-barn
-        else if (rot.venstre != null){
-            if(inneholder(verdi)) count++;
+        //Henrik sin metode
+        /*if (antall > 0 && inneholder(verdi)){
+            int count = 0;
+            Node<T> current = rot;
+
+            while (current != null){
+                int compare = comp.compare(verdi, current.verdi);
+
+                if( compare == 0){
+                    count++;
+                    current = current.høyre;
+                }
+                else if (compare > 0){
+                    current = current.høyre;
+                }
+                else {
+                    current = current.venstre;
+                }
+            }
+            return  count;
         }
-        //Tilfelle 3 : Dersom root har et høyre-barn
-        else if (rot.høyre != null){
-            if (inneholder(verdi)) count++;
-        }
-        //Tilfelle 4 : Dersom listen ikke inneholder noen
         else {
             return 0;
-
+        }*/
         }
-
-        return count; //Returnerer telleren. */
-
-        //Ide 4: /////
-
-
-        }
-
 
     //// OPPGAVE 2 SLUTT /////////////////////////////////////////////////
 
     //// OPPGAVE 3 //////////////////////////////////////////////////////
     private static <T> Node<T> førstePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if( p == null){
+            return null;
+        }
 
 
+        return null;
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {

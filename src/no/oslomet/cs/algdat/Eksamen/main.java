@@ -10,15 +10,16 @@ public class main {
         System.out.println(tre.antall()); // Utskrift: 0*/
 
         ////Oppgave 1  ///////////////////////
-        /*Integer[] a = {4,7,2,9,5,10,8,1,3,6};
+        Integer[] a = {4,7,2,9,5,10,8,1,3,6};
         EksamenSBinTre<Integer> tre1 = new EksamenSBinTre<>(Comparator.naturalOrder());
         for (int verdi : a) tre1.leggInn(verdi);
-        System.out.println(tre1.antall()); // Utskrift: 10*/
+        System.out.println(tre1.antall()); // Utskrift: 10
 
         ////Oppgave 2 ///////////////////////
-        Integer[] a = {4,7,2,9,4,10,8,7,4,6};
+        Integer[] a1 = {4,7,2,9,4,10,8,7,4,6};
         EksamenSBinTre<Integer> tre = new EksamenSBinTre<>(Comparator.naturalOrder());
-        for (int verdi : a) tre.leggInn(verdi);
+        for (int verdi : a1) tre.leggInn(verdi);
+        System.out.println("Tre: " + tre);
         System.out.println(tre.antall()); // Utskrift: 10
         System.out.println(tre.antall(5)); // Utskrift: 0
         System.out.println(tre.antall(4)); // Utskrift: 3

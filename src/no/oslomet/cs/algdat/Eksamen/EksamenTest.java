@@ -61,6 +61,7 @@ public class EksamenTest {
             if (tre.antall(1) != 1) {
                 antallFeil++;
                 System.out.println("Oppgave 2a: Feil antall(T)-metoden!");
+
             }
         } catch (Exception e) {
             antallFeil++;
@@ -79,6 +80,7 @@ public class EksamenTest {
                 || tre.antall(1) != 7 || tre.antall(0) != 0) {
             antallFeil++;
             System.out.println("Oppgave 2c: Feil antall(T)-metoden!");
+
         }
 
 
