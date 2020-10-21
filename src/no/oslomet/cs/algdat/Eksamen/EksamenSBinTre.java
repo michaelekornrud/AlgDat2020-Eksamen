@@ -144,47 +144,34 @@ public class EksamenSBinTre<T> {
         else{
             return 0;
         }
-        //Henrik sin metode
-        /*if (antall > 0 && inneholder(verdi)){
-            int count = 0;
-            Node<T> current = rot;
-
-            while (current != null){
-                int compare = comp.compare(verdi, current.verdi);
-
-                if( compare == 0){
-                    count++;
-                    current = current.høyre;
-                }
-                else if (compare > 0){
-                    current = current.høyre;
-                }
-                else {
-                    current = current.venstre;
-                }
-            }
-            return  count;
-        }
-        else {
-            return 0;
-        }*/
         }
 
     //// OPPGAVE 2 SLUTT /////////////////////////////////////////////////
 
     //// OPPGAVE 3 //////////////////////////////////////////////////////
+    //Følger eksemplene i delkapittel 5.1.7 i læreboka.
     private static <T> Node<T> førstePostorden(Node<T> p) {
-        if( p == null){
+        Node<T> hjelpeNode = new Node<>(p.verdi, null);
+        if (p == null) {
             return null;
         }
 
-
-        return null;
+        while (true) {
+            if(p.venstre != null) p = p.venstre;
+            else if (p.høyre != null) p = p.høyre;
+            else return p;
+        }
     }
 
     private static <T> Node<T> nestePostorden(Node<T> p) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+       if (p != null) p = førstePostorden(p);
+       else return null;
 
+        while (true) {
+            if(p.venstre != null) p = p.venstre;
+            else if (p.høyre != null) p = p.høyre;
+            else return p;
+        }
     }
     //// OPPGAVE 3 SLUTT ///////////////////////////////////////////////
 
