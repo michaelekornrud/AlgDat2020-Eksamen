@@ -1,0 +1,5 @@
+
+1) Fullfør oppgavene:
+
+
+2) Når ferdig, lag ny git-bundle

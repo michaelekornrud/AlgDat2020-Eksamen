@@ -191,6 +191,7 @@ public class EksamenSBinTre<T> {
 
     //// OPPGAVE 3 //////////////////////////////////////////////////////
     private static <T> Node<T> førstePostorden(Node<T> p) {
+        throw new UnsupportedOperationException("Ikke kodet ennå!");
 
 
     }
@@ -202,25 +203,99 @@ public class EksamenSBinTre<T> {
     //// OPPGAVE 3 SLUTT ///////////////////////////////////////////////
 
     //// OPPGAVE 4 ////////////////////////////////////////////////////
-
-
-    //// OPPGAVE 4 SLUTT /////////////////////////////////////////////
     public void postorden(Oppgave<? super T> oppgave) {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
-    public boolean fjern(T verdi) {
+
+    private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
+        throw new UnsupportedOperationException("Ikke kodet ennå!");
+    }
+    //// OPPGAVE 4 SLUTT /////////////////////////////////////////////
+
+    //// OPPGAVE 5 //////////////////////////////////////////////////
+    public ArrayList<T> serialize() {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
-    public int fjernAlle(T verdi) {
+    static <K> EksamenSBinTre<K> deserialize(ArrayList<K> data, Comparator<? super K> c) {
         throw new UnsupportedOperationException("Ikke kodet ennå!");
+    }
+
+    //// OPPGAVE 5 SLUTT ///////////////////////////////////////////
+
+    //// OPPGAVE 6 ////////////////////////////////////////////////
+    public boolean fjern(T verdi) {
+        if (verdi == null){
+            return false;
+        }
+
+        Node<T> a = rot, b = null; //b skal være forelder til a.
+
+        while (a != null){ //Leter etter verdi
+            int compare = comp.compare(verdi, a.verdi); //Sammenligner
+            if (compare < 0) { //Går til venstre
+                b = a;
+                a = a.venstre;
+            }
+            else if (compare > 0) {
+                b = a;
+                a = a.høyre; //Går til høyre
+            }
+            else {
+                break; //Den søkte verdien ligger i a.
+            }
+
+            if (a == null){
+                return false; //Finner ingen verdi
+            }
+
+            if(a.venstre == null || a.høyre == null){ //Tilfelle 1 og 2
+                Node<T> c = a.venstre != null ? a.venstre : a.høyre; //c får barn
+                if (a == rot){
+                    rot = c;
+                }
+                else if (a == b.venstre){
+                    b.venstre = c;
+                }
+                else {
+                    b.høyre = c;
+                }
+            }
+            else { //Tilfelle 3
+                Node<T> d = a, e = a.høyre;
+                while (e.venstre != null){
+                    d = e;
+                    e = e.venstre;
+                }
+                a.verdi = e.verdi;
+
+                if (d != a ){
+                    d.venstre = e.høyre;
+                }
+                else {
+                    d.høyre = e.høyre;
+                }
+            }
+        }
+
+        antall--;
+        return true;
+    }
+
+    public int fjernAlle(T verdi) {
+        throw new UnsupportedOperationException("Ikke kodet ennå! :) ");
     }
 
 
 
     public void nullstill() {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        if(tom()){
+            return;
+        }
+
     }
+    //// OPPGAVE 6 SLUTT //////////////////////////////////////////////
+
 
 
 
@@ -230,17 +305,11 @@ public class EksamenSBinTre<T> {
         postordenRecursive(rot, oppgave);
     }
 
-    private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
 
-    public ArrayList<T> serialize() {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
 
-    static <K> EksamenSBinTre<K> deserialize(ArrayList<K> data, Comparator<? super K> c) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
-    }
+
+
+
 
 
 } // ObligSBinTre
