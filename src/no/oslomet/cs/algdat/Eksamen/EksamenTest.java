@@ -80,7 +80,6 @@ public class EksamenTest {
                 || tre.antall(1) != 7 || tre.antall(0) != 0) {
             antallFeil++;
             System.out.println("Oppgave 2c: Feil antall(T)-metoden!");
-
         }
 
 
@@ -125,7 +124,6 @@ public class EksamenTest {
 
         try {
             s = tre.toStringPostOrder();
-
             if (!s.equals("[2, 4, 5, 3, 1, 7, 9, 8, 6, 11, 13, 12, 14, 10]")) {
                 antallFeil++;
 

@@ -63,33 +63,31 @@ public class EksamenSBinTre<T> {
 
 
     //// OPPGAVE 1 ////////////////////////////////////////////////////////
-    //Følger programkode 5.2.3 a)
+
     public boolean leggInn(T verdi) {
-        Node<T> a = rot, b =  null; //a starter i roten, b = null
+        //Følger programkode 5.2.11 b)
+        Node<T> a = rot;            //a starter i roten
+        Node<T> b =  null;          //Hjelpevariabel
         int tmp = 0;                //hjelpevariabel
 
         while (a != null){          //Fortsetter til a er ute av treet
             b = a;                  //b er forelder til a
             tmp = comp.compare(verdi, a.verdi);     //brukker komparatoren
-            a = tmp < 0 ? a.venstre : a.høyre;
+            a = tmp < 0 ? a.venstre : a.høyre;      //flytter a
         }
 
         // a er nå null dvs. ute av treet, b er den siste vi passerte
-        a = new Node<>(verdi, null);
-        if(b == null){
-            rot = a;
+        a = new Node<>(verdi, b);              //Oppretter en ny node
 
-        }
-        else if (tmp < 0 ){
-            b.venstre = a;
+        if(b == null) rot = a;                 // a blir rotnode
+        else if (tmp < 0 ) b.venstre = a;      // venstre barn til q
+        else b.høyre = a;                      // høyre barn til q.
 
-        }
-        else {
-            b.høyre = a;
-        }
-        antall++;
-        //endringer++;
+        antall++;           //Oppdaterer antall
+        endringer++;        //Oppdaterer endringer
+
         return true;
+
     }
 
     //// OPPGAVE 1 SLUTT //////////////////////////////////////////////////
@@ -120,58 +118,73 @@ public class EksamenSBinTre<T> {
         return antall;
     }
 
-    public int antall(T verdi) {
-        if (antall() > 0 && inneholder(verdi)) {
-            int count = 0;
-            Node<T> current = rot;
+    /** Denne skal være ferdig, mulig jeg må endre på denne dersom jeg velger å endre på leggInn(T verdi).
+     *
+     * @param verdi ..
+     * @return returner antall av en verdi i et tre.
+     */
 
-            //Forsøk 1: fungerer delvis
-            while (current != null) {
-                int compare = comp.compare(verdi, current.verdi);
-                if (compare == 0){
-                    count++;
-                    current = current.høyre;
-                }
-                else if (compare > 0){
-                    current = current.høyre;
-                }
-                else {
-                    current = current.venstre;
-                }
+    public int antall(T verdi) {
+        if (antall() > 0 && inneholder(verdi)) {                    //Sjekker om treet er tomt og om det inneholder minst en av verdien
+            int count = 0;                                          //Hjelpevariabel --> brukes for å telle antall
+            Node<T> current = rot;                                  //Hjelpevariabel --> Slik at jeg alltid kan referere til roten
+
+            while (current != null) {                               //Så lenge roten != null
+                int compare = comp.compare(verdi, current.verdi);   //Bruker comparator på input-verdi og verdien av roten
+                if (compare == 0) {                                 //Dersom input-veri == rot.verdi
+                    count++;                                        //Øker count med 1.
+                current = current.høyre;                            //Setter roten til høyre barn
             }
-            return count;
+                else if (compare > 0)current = current.høyre;       //Dersom compare = -1 setter jeg neste rot til høyre barn
+                else current = current.venstre;                     //Dersom compare = 1 setter jeg neste rot til venste barn
+            }
+            return count;                                           //Returnerer counter
         }
-        else{
-            return 0;
-        }
+        else return 0;                                              //Retunerer 0 dersom treet et tomt eller ikke inneholder imput-verdien
+
         }
 
     //// OPPGAVE 2 SLUTT /////////////////////////////////////////////////
 
     //// OPPGAVE 3 //////////////////////////////////////////////////////
     //Følger eksemplene i delkapittel 5.1.7 i læreboka.
+    //
     private static <T> Node<T> førstePostorden(Node<T> p) {
-        Node<T> hjelpeNode = new Node<>(p.verdi, null);
-        if (p == null) {
-            return null;
+        if (p == null) {                                //Sjekker om p har verdi eller ikke
+            return null;                                //Returnerer null dersom p ikke har noen verdi.
         }
 
         while (true) {
-            if(p.venstre != null) p = p.venstre;
-            else if (p.høyre != null) p = p.høyre;
-            else return p;
+            if (p.venstre != null) p = p.venstre;       //Dersom p.venstre != null --> p settes lik p.venstre
+            else if (p.høyre != null) p = p.høyre;      //Dersom p.venstre = null og p.høyre != null --> p settes lik p.høyre
+            else return p;                              //Hvis p.venstre og p.høyre == null --> returnerer kun p.
         }
+
     }
 
-    private static <T> Node<T> nestePostorden(Node<T> p) {
-       if (p != null) p = førstePostorden(p);
-       else return null;
 
-        while (true) {
-            if(p.venstre != null) p = p.venstre;
-            else if (p.høyre != null) p = p.høyre;
-            else return p;
+    private static <T> Node<T> nestePostorden(Node<T> p) {
+        //Bruker
+
+
+        Node<T> root = p.forelder;                  //Finner p.forelder
+
+        if (root == null) return null;              //Dersom forelderNoden til p er null, skal "null" returneres --> p = rot (ingen forelder).
+        else if (p == root.høyre){                  //Dersom p =  forelder.høyre, vil neste posisjon være p.forelder.
+            p = root;
         }
+        else if (p == root.venstre){                //Dersom p er det venstre barnet (p == p.forelder.venstre)
+            if (root.høyre == null)p = root;        //Hvis det høyre barnet = null, blir neste i postorden p.forelder
+            else {                                  //Hvis det høyre barnet != null, blir neste i postorden = p.forelder.høyre
+                p = root.høyre;
+                while (p.venstre != null) {         // Hvis p er en foreldreNode, hopp en orden ned
+                    p = p.venstre;
+                }
+            }
+        }
+
+        return p;                                   //Returner p eller p.forelder?
+
     }
     //// OPPGAVE 3 SLUTT ///////////////////////////////////////////////
 
@@ -256,7 +269,7 @@ public class EksamenSBinTre<T> {
     }
 
     public int fjernAlle(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå! :) ");
+        throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
 
 
@@ -273,7 +286,7 @@ public class EksamenSBinTre<T> {
 
 
 
-
+    //Tror denne er ferigkodet
     public void postordenRecursive(Oppgave<? super T> oppgave) {
         postordenRecursive(rot, oppgave);
     }

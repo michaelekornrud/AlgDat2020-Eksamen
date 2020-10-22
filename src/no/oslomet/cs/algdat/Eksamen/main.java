@@ -1,5 +1,7 @@
 package no.oslomet.cs.algdat.Eksamen;
 
+import org.w3c.dom.Node;
+
 import java.util.Comparator;
 
 public class main {
@@ -19,11 +21,18 @@ public class main {
         Integer[] a1 = {4,7,2,9,4,10,8,7,4,6};
         EksamenSBinTre<Integer> tre = new EksamenSBinTre<>(Comparator.naturalOrder());
         for (int verdi : a1) tre.leggInn(verdi);
-        System.out.println("Tre: " + tre);
+        System.out.println("Tre: " + tre.toStringPostOrder());
+
         System.out.println(tre.antall()); // Utskrift: 10
         System.out.println(tre.antall(5)); // Utskrift: 0
         System.out.println(tre.antall(4)); // Utskrift: 3
         System.out.println(tre.antall(7)); // Utskrift: 2
         System.out.println(tre.antall(10)); // Utskrift: 1
+
+        //// Oppgave 3 ////////////////////
+
+
+        System.out.println("Oppg3: ");
+        System.out.println(tre.toStringPostOrder());
     }
 }
