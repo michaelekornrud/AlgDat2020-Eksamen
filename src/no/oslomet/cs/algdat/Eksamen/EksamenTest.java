@@ -6,6 +6,7 @@ package no.oslomet.cs.algdat.Eksamen;
 import no.oslomet.cs.algdat.Eksamen.EksamenSBinTre;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
@@ -227,6 +228,7 @@ public class EksamenTest {
         if (!s.equals("[]")) {
             antallFeil++;
             System.out.println("Oppgave 6a: Feil i fjern(T)!");
+            System.out.println("6a: " + s + " skal være []");
         }
 
         int[] a = {6, 3, 9, 1, 5, 7, 10, 2, 4, 8, 11, 6, 8};
@@ -238,6 +240,7 @@ public class EksamenTest {
         if (!s.equals("[2, 1, 4, 5, 3, 6, 8, 8, 7, 11, 10, 9, 6]")) {
             antallFeil++;
             System.out.println("Oppgave 6b: Feil i fjern(T)! Tallet 12 er ikke i treet!");
+
         }
 
         if (fjernet == true) {
