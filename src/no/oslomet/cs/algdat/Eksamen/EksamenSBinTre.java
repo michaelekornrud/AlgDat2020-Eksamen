@@ -1,7 +1,7 @@
 package no.oslomet.cs.algdat.Eksamen;
 
 
-import org.w3c.dom.Node;
+
 
 import java.util.*;
 
@@ -133,7 +133,7 @@ public class EksamenSBinTre<T> {
                 int compare = comp.compare(verdi, current.verdi);   //Bruker comparator på input-verdi og verdien av roten
                 if (compare == 0) {                                 //Dersom input-veri == rot.verdi
                     count++;                                        //Øker count med 1.
-                current = current.høyre;                            //Setter roten til høyre barn
+                    current = current.høyre;                            //Setter roten til høyre barn
             }
                 else if (compare > 0)current = current.høyre;       //Dersom compare = -1 setter jeg neste rot til høyre barn
                 else current = current.venstre;                     //Dersom compare = 1 setter jeg neste rot til venste barn
@@ -190,82 +190,130 @@ public class EksamenSBinTre<T> {
 
     //// OPPGAVE 4 ////////////////////////////////////////////////////
     public void postorden(Oppgave<? super T> oppgave) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //Ikke bruk hjelpevariabler eller rekursjon
+        //Bruk nestePostOrden fra forige oppgave
+            // 1. Start med å finne den første noden i postorden (førstePostOrden)
+            // 2. Bruk f.eks. en while-løkke til å finne neste node helt til p = null
+                //Bruk noe som "p = nestePostOrden(p)"
+
+        if (tom()) return;                      // Dersom input er tomt skal metoden returnere.
+        Node<T> p = førstePostorden(rot);       // Setter p til første node i postorden
+        while (p != null){                      // Så lenge p ikke er null
+            oppgave.utførOppgave(p.verdi);      // Skriver ut / lagrer p
+            p = nestePostorden(p);              // Oppdaterer p til neste node i input-liste
+        }
+
+         /*
+
+         //Førstre forsøk
+        if (p.venstre != null){
+                p = p.venstre;
+                System.out.println("P venstre: " + p);
+                p = nestePostorden(p);
+                System.out.println("p neste: " + p);
+            }
+        else if (p.høyre != null){
+            p = p.høyre;
+            p = nestePostorden(p);
+            }
+            oppgave.utførOppgave(p.verdi);*/
     }
 
     private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //Fra forelesing om binære trær
+        if (p.venstre != null) postordenRecursive(p.venstre, oppgave);
+        if (p.høyre != null) postordenRecursive(p.høyre, oppgave);
+        oppgave.utførOppgave(p.verdi);
     }
     //// OPPGAVE 4 SLUTT /////////////////////////////////////////////
 
     //// OPPGAVE 5 //////////////////////////////////////////////////
     public ArrayList<T> serialize() {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //Har brukt metoden printLevelOrder fra forelesing som eksempel
+        Node<T> p = rot;                            //Oppretter en hjelpenode for rot
+        ArrayDeque<Node<T>> q = new ArrayDeque<>(); //Bruker ArrayDeque for å legge input i en kø
+        ArrayList<T> liste = new ArrayList<>();     //En ArrayList som skal returneres
+
+        q.addLast(p);                               //Legger roten (p) inn i kø
+        liste.add(p.verdi);                         //Legger roten (p) inn i liste
+
+        while (!q.isEmpty()){                       //Så lenge køen ikke er tom
+            //1. Ta ut den første av køen
+            Node<T> current = q.removeFirst();      //Fjener den første i køen
+
+            // 2. Legger til current sitt venstre barn hvis ikke lik null
+            if (current.venstre != null){
+                q.addLast(current.venstre);
+                liste.add(current.venstre.verdi);
+            }
+            // 3. Gjør det samme for høyre barn
+            if (current.høyre != null){
+                q.addLast(current.høyre);
+                liste.add(current.høyre.verdi);
+            }
+        }
+        return liste ;                              //Returnerer en ArrayList
     }
 
     static <K> EksamenSBinTre<K> deserialize(ArrayList<K> data, Comparator<? super K> c) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        //Dersom input-array = null --> returner null
+        if (data.isEmpty()) return null;
+
+        //Oppretter et tre som skal
+        EksamenSBinTre<K> tre = new EksamenSBinTre<>(c);
+
+        //Bruker en for løkke til telle fra 0 -> størrelsen av input-array
+        for (int i = 0; i < data.size(); ++i){
+            K val = data.get(i);        //Henter verien på plass i
+            tre.leggInn(val);           //Legger vberdien på plass i inn i treet
+        }
+        return tre;                     //Returnerer treet.
+
+        /**
+         * Kan også skrives som for (K val : data) tre.leggInn(val);
+         * Men jeg skriver på denne måten fordi det er enklere å forstå foreløpig
+         *
+         */
     }
 
     //// OPPGAVE 5 SLUTT ///////////////////////////////////////////
 
     //// OPPGAVE 6 ////////////////////////////////////////////////
     public boolean fjern(T verdi) {
-        if (verdi == null){
-            return false;
+        //Følger Programkode 5.2.8 d)
+        if (verdi == null || !inneholder(verdi)) return false;
+
+        Node<T> p = rot, q = null;
+
+        while (p != null){
+            int cmp  = comp.compare(verdi, p.verdi);
+            if (cmp < 0) {q = p; p = p.venstre;}
+            else if (cmp > 0) {q = p; p = p.høyre;}
+            else break;
         }
 
-        Node<T> a = rot, b = null; //b skal være forelder til a.
+        if (p == null) return false;
 
-        while (a != null){ //Leter etter verdi
-            int compare = comp.compare(verdi, a.verdi); //Sammenligner
-            if (compare < 0) { //Går til venstre
-                b = a;
-                a = a.venstre;
-            }
-            else if (compare > 0) {
-                b = a;
-                a = a.høyre; //Går til høyre
-            }
-            else {
-                break; //Den søkte verdien ligger i a.
-            }
-
-            if (a == null){
-                return false; //Finner ingen verdi
-            }
-
-            if(a.venstre == null || a.høyre == null){ //Tilfelle 1 og 2
-                Node<T> c = a.venstre != null ? a.venstre : a.høyre; //c får barn
-                if (a == rot){
-                    rot = c;
-                }
-                else if (a == b.venstre){
-                    b.venstre = c;
-                }
-                else {
-                    b.høyre = c;
-                }
-            }
-            else { //Tilfelle 3
-                Node<T> d = a, e = a.høyre;
-                while (e.venstre != null){
-                    d = e;
-                    e = e.venstre;
-                }
-                a.verdi = e.verdi;
-
-                if (d != a ){
-                    d.venstre = e.høyre;
-                }
-                else {
-                    d.høyre = e.høyre;
-                }
-            }
+        if (p.venstre == null || p.høyre == null){
+            Node<T> b = p.venstre != null ? p.venstre : p.høyre;
+            if (p == rot) rot = b;
+            else if (p == q.venstre) q.venstre = b;
+            else q.høyre = b;
         }
+        else {
+            Node<T> s = p, r = p.høyre;
+            while (r.venstre != null){
+                s = r;
+                r = r.venstre;
+            }
+            p.verdi = r.verdi;
 
+            if (s != p) s.venstre = r.høyre;
+            else s.høyre = r.høyre;
+        }
         antall--;
         return true;
+
     }
 
     public int fjernAlle(T verdi) {
@@ -275,10 +323,7 @@ public class EksamenSBinTre<T> {
 
 
     public void nullstill() {
-        if(tom()){
-            return;
-        }
-
+        throw new UnsupportedOperationException("Ikke kodet ennå!");
     }
     //// OPPGAVE 6 SLUTT //////////////////////////////////////////////
 
