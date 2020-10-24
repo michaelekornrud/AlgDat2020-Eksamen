@@ -196,20 +196,12 @@ public class EksamenSBinTre<T> {
             // 2. Bruk f.eks. en while-løkke til å finne neste node helt til p = null
                 //Bruk noe som "p = nestePostOrden(p)
 
-         Node<T> p = rot;
-
-         //Førstre forsøk
-        if (p.venstre != null){
-                p = p.venstre;
-                System.out.println("P venstre: " + p);
-                p = nestePostorden(p);
-                System.out.println("p neste: " + p);
-            }
-        else if (p.høyre != null){
-            p = p.høyre;
-            p = nestePostorden(p);
-            }
-            oppgave.utførOppgave(p.verdi);
+        if (tom()) return;                      // Dersom input er tomt skal metoden returnere.
+        Node<T> p = førstePostorden(rot);       // Setter p til første node i postorden
+        while (p != null){                      // Så lenge p ikke er null
+            oppgave.utførOppgave(p.verdi);      // Skriver ut / lagrer p
+            p = nestePostorden(p);              // Oppdaterer p til neste node i input-liste
+        }
     }
 
     private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
