@@ -228,13 +228,13 @@ public class EksamenSBinTre<T> {
 
             // 2. Legger til current sitt venstre barn hvis ikke lik null
             if (current.venstre != null){
-                q.addLast(current.venstre);
-                liste.add(current.venstre.verdi);
+                q.addLast(current.venstre);         //Legger til i køen
+                liste.add(current.venstre.verdi);   // Legger til i listen
             }
             // 3. Gjør det samme for høyre barn
             if (current.høyre != null){
-                q.addLast(current.høyre);
-                liste.add(current.høyre.verdi);
+                q.addLast(current.høyre);           //Legger til i køen
+                liste.add(current.høyre.verdi);     //Legger til i listen
             }
         }
         return liste ;                              //Returnerer en ArrayList
