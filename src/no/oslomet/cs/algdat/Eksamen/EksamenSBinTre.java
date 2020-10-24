@@ -194,16 +194,9 @@ public class EksamenSBinTre<T> {
         //Bruk nestePostOrden fra forige oppgave
             // 1. Start med å finne den første noden i postorden (førstePostOrden)
             // 2. Bruk f.eks. en while-løkke til å finne neste node helt til p = null
-                //Bruk noe som "p = nestePostOrden(p)"
+                //Bruk noe som "p = nestePostOrden(p)
 
-        if (tom()) return;                      // Dersom input er tomt skal metoden returnere.
-        Node<T> p = førstePostorden(rot);       // Setter p til første node i postorden
-        while (p != null){                      // Så lenge p ikke er null
-            oppgave.utførOppgave(p.verdi);      // Skriver ut / lagrer p
-            p = nestePostorden(p);              // Oppdaterer p til neste node i input-liste
-        }
-
-         /*
+         Node<T> p = rot;
 
          //Førstre forsøk
         if (p.venstre != null){
@@ -216,7 +209,7 @@ public class EksamenSBinTre<T> {
             p = p.høyre;
             p = nestePostorden(p);
             }
-            oppgave.utførOppgave(p.verdi);*/
+            oppgave.utførOppgave(p.verdi);
     }
 
     private void postordenRecursive(Node<T> p, Oppgave<? super T> oppgave) {
