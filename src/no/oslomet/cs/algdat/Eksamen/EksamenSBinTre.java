@@ -210,6 +210,11 @@ public class EksamenSBinTre<T> {
         if (p.høyre != null) postordenRecursive(p.høyre, oppgave);
         oppgave.utførOppgave(p.verdi);
     }
+
+    //Tror denne er ferigkodet
+    public void postordenRecursive(Oppgave<? super T> oppgave) {
+        postordenRecursive(rot, oppgave);
+    }
     //// OPPGAVE 4 SLUTT /////////////////////////////////////////////
 
     //// OPPGAVE 5 //////////////////////////////////////////////////
@@ -244,7 +249,7 @@ public class EksamenSBinTre<T> {
         //Dersom input-array = null --> returner null
         if (data.isEmpty()) return null;
 
-        //Oppretter et tre som skal
+        //Oppretter et tre
         EksamenSBinTre<K> tre = new EksamenSBinTre<>(c);
 
         //Bruker en for løkke til telle fra 0 -> størrelsen av input-array
@@ -266,38 +271,44 @@ public class EksamenSBinTre<T> {
     //// OPPGAVE 6 ////////////////////////////////////////////////
     public boolean fjern(T verdi) {
         //Følger Programkode 5.2.8 d)
-        if (verdi == null || !inneholder(verdi)) return false;
+        if (verdi == null || !inneholder(verdi)) return false;          //Dersom verdi = null og treet ikke inneholder verdi
 
-        Node<T> p = rot, q = null;
+        Node<T> p = rot, q = null;                                      //Hjelpenoder
 
-        while (p != null){
-            int cmp  = comp.compare(verdi, p.verdi);
-            if (cmp < 0) {q = p; p = p.venstre;}
-            else if (cmp > 0) {q = p; p = p.høyre;}
+        while (p != null){                                              //Så lenge p ikke er null, så skal jeg...
+            int cmp  = comp.compare(verdi, p.verdi);                    //1. sammenligne input med rot-verdien
+            if (cmp < 0) {q = p; p = p.venstre;}                        //2. dersom verdi < roten --> q er forelder til p og p hopper ned til venstre
+            else if (cmp > 0) {q = p; p = p.høyre;}                     //3. dersom verdi > roten --> q er forelder til p og p hopper ned til høyre
             else break;
         }
 
-        if (p == null) return false;
+        if (p == null) return false;                                    //Dersom p =  null --> Treet er tomt
 
-        if (p.venstre == null || p.høyre == null){
-            Node<T> b = p.venstre != null ? p.venstre : p.høyre;
-            if (p == rot) rot = b;
-            else if (p == q.venstre) q.venstre = b;
-            else q.høyre = b;
+        if (p.venstre == null || p.høyre == null){                      //Hvis p.venstre eller p.høyre er lik null
+            Node<T> b = p.venstre != null ? p.venstre : p.høyre;        //en node som går til venstre hvis det ikke er en verdi til høyre
+            if (p == rot){                                              //Dersom p = roten
+                rot = b;                                                //Setter roten lik b.
+                rot.forelder = null;                                    // og rotens forelder til null
+            }
+            else if (p == q.venstre) {                                  //Hvis p = q.venstre
+                q.venstre = b;                                          //Setter venstrebarnet til q lik b
+                if(b != null) b.forelder = q;                           //Hvis b ikke lik null --> b sin forelder er lik q
+            }
+            else q.høyre = b;                                           //Hvis ikke så er høyrebarnet til q = b.
         }
         else {
-            Node<T> s = p, r = p.høyre;
-            while (r.venstre != null){
-                s = r;
-                r = r.venstre;
+            Node<T> s = p, r = p.høyre;                                 //Nye hjelpenoder
+            while (r.venstre != null){                                  //Så lenge venstrebarnet til r ikke lik null.
+                s = r;                                                  //s hopper en ned til høyre
+                r = r.venstre;                                          //r settes lik venstrebarnet til r
             }
             p.verdi = r.verdi;
 
-            if (s != p) s.venstre = r.høyre;
-            else s.høyre = r.høyre;
+            if (s != p) s.venstre = r.høyre;                            //Dersom s ikke lik p, settes venstrebarnet til s lik høyrebarnet til r.
+            else s.høyre = r.høyre;                                     //Ellers skal høyrebarnet til s være lik høyrebarnet til r.
         }
-        antall--;
-        return true;
+        antall--;                                                       //Reduserer antall
+        return true;                                                    //returnerer true
 
     }
 
@@ -316,10 +327,7 @@ public class EksamenSBinTre<T> {
 
 
 
-    //Tror denne er ferigkodet
-    public void postordenRecursive(Oppgave<? super T> oppgave) {
-        postordenRecursive(rot, oppgave);
-    }
+
 
 
 
