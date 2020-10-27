@@ -274,8 +274,8 @@ public class EksamenSBinTre<T> {
     //// OPPGAVE 6 ////////////////////////////////////////////////
     public boolean fjern(T verdi) {
         //Følger Programkode 5.2.8 d)
-        if (!tom() && inneholder(verdi)) { //Dersom verdi = null og treet ikke inneholder verdi
-            if (verdi == null || !inneholder(verdi)) return false;
+        //Dersom verdi = null
+            if (verdi == null) return false;
 
             Node<T> p = rot, q = null;                                      //Hjelpenoder
 
@@ -300,7 +300,8 @@ public class EksamenSBinTre<T> {
                     if (b != null) {
                         b.forelder = null;                               // og rotens forelder til null
                     }
-                } else if (p == q.venstre) {                               //Hvis p = q.venstre
+                }
+                else if (p == q.venstre) {                               //Hvis p = q.venstre
                     q.venstre = b;                                         //Setter venstrebarnet til q lik b
                     if (b != null)
                         b.forelder = q;                                    //Hvis b ikke lik null --> b sin forelder er lik q
@@ -310,7 +311,8 @@ public class EksamenSBinTre<T> {
                         b.forelder = q;
                     }
                 }
-            } else {
+            }
+            else {
                 Node<T> s = p, r = p.høyre;                                 //Nye hjelpenoder
                 while (r.venstre != null) {                                 //Så lenge venstrebarnet til r ikke lik null.
                     s = r;                                                  //s hopper en ned til høyre
@@ -318,30 +320,31 @@ public class EksamenSBinTre<T> {
                 }
                 p.verdi = r.verdi;
 
-                if (s != p)
+                if (s != p) {
                     s.venstre = r.høyre;                            //Dersom s ikke lik p, settes venstrebarnet til s lik høyrebarnet til r.
-                else
+                    if (r.høyre != null) {
+                        r.forelder.høyre = s;
+                    }
+                }
+                else {
                     s.høyre = r.høyre;                                     //Ellers skal høyrebarnet til s være lik høyrebarnet til r.
+                    if (r.venstre != null) {
+                        r.forelder.venstre = s;
+                        }
+                    }
             }
             antall--;                                                       //Reduserer antall med en
             return true;                                                    //returnerer true
-        }
-        return false;
+
+
 
     }
 
     public int fjernAlle(T verdi) {
+        if (rot == null) return 0;
         int counter = 0;
 
-        Node<T> p = førstePostorden(rot);
-        if (tom()) return 0;
-
-            while (p != null && verdi != null) {
-                fjern(verdi);
-                counter++;
-            }
-            antall--;
-            p = nestePostorden(p);
+            while (fjern(verdi)) counter++;
 
         return counter;
 
@@ -369,50 +372,28 @@ public class EksamenSBinTre<T> {
     }
 
     public void nullstill() {
+        if (rot == null) return;
         Node<T> p = førstePostorden(rot);
         Node<T> f = p.forelder;
-        Node<T> q = nestePostorden(p);
 
-        if (p.venstre != null){
-            nullstill();
-            p.venstre = null;
-            //antall--;
-        }
-        if (p.høyre != null){
-            nullstill();
-            p.høyre = null;
-
-        }
-        p.verdi = null;
-        antall--;
+           nullStill(rot);
+           rot = null;
 
 
-        /*if (tom()) return;
 
 
-        System.out.println("første: " + p + " neste: " + nestePostorden(p) + " forelder: " + f);
-        while (p != null) {
-            if (antall == 1 || p == rot) {
-            rot = null;
-            antall = 0;
-        }
-            p.høyre = null;
-            p.venstre = null;
-            antall--;
-        }
-        p.verdi = null;
-        p = q;
-        antall--;
-    }*/
-
-   /* //Lager en hjelpemetode
-    private void nullStill(Node<T> p){
-        if (!tom()){
-            if (p.venstre != null) nullStill(p.venstre);
-            if (p.høyre != null) nullStill(p.høyre);
-        }
-        antall--;*/
     }
+        //Lager en hjelpemetode
+        private void nullStill (Node<T> p) {
+
+                if (p.venstre != null) nullStill(p.venstre);
+                if (p.høyre != null) nullStill(p.høyre);
+
+            antall--;
+            rot = null;
+
+        }
+
     //// OPPGAVE 6 SLUTT //////////////////////////////////////////////
 
 } // ObligSBinTre
