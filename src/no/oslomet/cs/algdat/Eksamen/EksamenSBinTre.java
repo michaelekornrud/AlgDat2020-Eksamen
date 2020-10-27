@@ -1,10 +1,5 @@
 package no.oslomet.cs.algdat.Eksamen;
 
-
-
-
-import org.w3c.dom.Node;
-
 import java.util.*;
 
 public class EksamenSBinTre<T> {
@@ -38,6 +33,10 @@ public class EksamenSBinTre<T> {
     private Node<T> rot;                            // peker til rotnoden
     private int antall;                             // antall noder
     private int endringer;                          // antall endringer
+    /** @param endringer  Siden det har blitt klartgjort at denne ikke
+     *  trengs å brukes. Men siden endringer ligger i den oppgave-koden velger jeg å la den stå selvom
+     *  den gir meg en warning.
+     */
 
     private final Comparator<? super T> comp;       // komparator
 
@@ -255,32 +254,26 @@ public class EksamenSBinTre<T> {
         //Oppretter et tre
         EksamenSBinTre<K> tre = new EksamenSBinTre<>(c);
 
-        //Bruker en for løkke til telle fra 0 -> størrelsen av input-array
-        for (int i = 0; i < data.size(); ++i){
-            K val = data.get(i);        //Henter verien på plass i
-            tre.leggInn(val);           //Legger vberdien på plass i inn i treet
+        //Bruken en forbedret for-løkke for å legge nodene inn i treet
+        for (K val : data) {
+            tre.leggInn(val);           //Legger vberdien inn i treet
         }
         return tre;                     //Returnerer treet.
-
-        /**
-         * Kan også skrives som "for (K val : data) tre.leggInn(val);"
-         * Men jeg skriver på denne måten fordi det er enklere å forstå foreløpig
-         *
-         */
     }
+    /**
+     Kan også skrives som "for (int i = 0; i < data.size; ++i) K val = data.get(i);"
+     Men skiver det med en forbedret for-løkke da dette ikke gir en warning.
+     */
 
     //// OPPGAVE 5 SLUTT ///////////////////////////////////////////
 
     //// OPPGAVE 6 ////////////////////////////////////////////////
     public boolean fjern(T verdi) {
         //Følger Programkode 5.2.8 d)
-        //Dersom verdi = null
-            if (verdi == null) return false;
-
+            if (verdi == null) return false;                                //Dersom verdi = null
             Node<T> p = rot, q = null;                                      //Hjelpenoder
-
-            while (p != null) {                                              //Så lenge p ikke er null, så skal jeg...
-                int cmp = comp.compare(verdi, p.verdi);                    //1. sammenligne input med rot-verdien
+            while (p != null) {                                             //Så lenge p ikke er null, så skal jeg...
+                int cmp = comp.compare(verdi, p.verdi);                     //1. sammenligne input med rot-verdien
                 if (cmp < 0) {
                     q = p;
                     p = p.venstre; //2. dersom verdi < roten --> q er forelder til p og p hopper ned til venstre
@@ -298,10 +291,10 @@ public class EksamenSBinTre<T> {
                 if (p == rot) {                                            //Dersom p = roten
                     rot = b;                                               //Setter roten lik b.
                     if (b != null) {
-                        b.forelder = null;                               // og rotens forelder til null
+                        b.forelder = null;                                 // og rotens forelder til null
                     }
                 }
-                else if (p == q.venstre) {                               //Hvis p = q.venstre
+                else if (p == q.venstre) {                                 //Hvis p = q.venstre
                     q.venstre = b;                                         //Setter venstrebarnet til q lik b
                     if (b != null)
                         b.forelder = q;                                    //Hvis b ikke lik null --> b sin forelder er lik q
@@ -321,15 +314,15 @@ public class EksamenSBinTre<T> {
                 p.verdi = r.verdi;
 
                 if (s != p) {
-                    s.venstre = r.høyre;                            //Dersom s ikke lik p, settes venstrebarnet til s lik høyrebarnet til r.
+                    s.venstre = r.høyre;                                    //Dersom s ikke lik p, settes venstrebarnet til s lik høyrebarnet til r.
                     if (r.høyre != null) {
                         r.forelder.høyre = s;
                     }
                 }
                 else {
                     s.høyre = r.høyre;                                     //Ellers skal høyrebarnet til s være lik høyrebarnet til r.
-                    if (r.venstre != null) {
-                        r.forelder.venstre = s;
+                    if (r.høyre != null) {
+                        r.forelder.høyre = s;
                         }
                     }
             }
@@ -347,53 +340,22 @@ public class EksamenSBinTre<T> {
             while (fjern(verdi)) counter++;
 
         return counter;
-
-        /*if (verdi == null || !inneholder(verdi)) return 0;
-
-        while (inneholder(verdi)){
-            fjern(verdi);
-            counter++;
-            antall--;
-        }
-
-        return counter;*/
-
-       /*boolean fjernOK = true;
-        while (fjernOK){
-            if (fjern(verdi)){
-                counter++;
-                antall--;
-            }
-
-            else fjernOK = false;
-        }
-
-        return counter;*/
     }
 
     public void nullstill() {
         if (rot == null) return;
-        Node<T> p = førstePostorden(rot);
-        Node<T> f = p.forelder;
 
            nullStill(rot);
            rot = null;
-
-
-
-
     }
         //Lager en hjelpemetode
-        private void nullStill (Node<T> p) {
+    private void nullStill (Node<T> p) {
+        if (p.venstre != null) nullStill(p.venstre);
+        if (p.høyre != null) nullStill(p.høyre);
 
-                if (p.venstre != null) nullStill(p.venstre);
-                if (p.høyre != null) nullStill(p.høyre);
+        antall--;
+        rot = null;
 
-            antall--;
-            rot = null;
-
-        }
-
+    }
     //// OPPGAVE 6 SLUTT //////////////////////////////////////////////
-
 } // ObligSBinTre
