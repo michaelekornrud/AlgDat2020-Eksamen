@@ -3,6 +3,8 @@ package no.oslomet.cs.algdat.Eksamen;
 
 
 
+import org.w3c.dom.Node;
+
 import java.util.*;
 
 public class EksamenSBinTre<T> {
@@ -84,8 +86,6 @@ public class EksamenSBinTre<T> {
         else b.høyre = a;                      // høyre barn til q.
 
         antall++;           //Oppdaterer antall
-        endringer++;        //Oppdaterer endringer
-
         return true;
 
     }
@@ -180,6 +180,9 @@ public class EksamenSBinTre<T> {
                 while (p.venstre != null) {         // Hvis p er en foreldreNode, hopp en orden ned
                     p = p.venstre;
                 }
+                while (p.høyre != null){
+                    p = p.høyre;
+                }
             }
         }
 
@@ -260,7 +263,7 @@ public class EksamenSBinTre<T> {
         return tre;                     //Returnerer treet.
 
         /**
-         * Kan også skrives som for (K val : data) tre.leggInn(val);
+         * Kan også skrives som "for (K val : data) tre.leggInn(val);"
          * Men jeg skriver på denne måten fordi det er enklere å forstå foreløpig
          *
          */
@@ -271,69 +274,137 @@ public class EksamenSBinTre<T> {
     //// OPPGAVE 6 ////////////////////////////////////////////////
     public boolean fjern(T verdi) {
         //Følger Programkode 5.2.8 d)
-        if (verdi == null || !inneholder(verdi)) return false;          //Dersom verdi = null og treet ikke inneholder verdi
+        if (!tom() && inneholder(verdi)) { //Dersom verdi = null og treet ikke inneholder verdi
+            if (verdi == null || !inneholder(verdi)) return false;
 
-        Node<T> p = rot, q = null;                                      //Hjelpenoder
 
-        while (p != null){                                              //Så lenge p ikke er null, så skal jeg...
-            int cmp  = comp.compare(verdi, p.verdi);                    //1. sammenligne input med rot-verdien
-            if (cmp < 0) {q = p; p = p.venstre;}                        //2. dersom verdi < roten --> q er forelder til p og p hopper ned til venstre
-            else if (cmp > 0) {q = p; p = p.høyre;}                     //3. dersom verdi > roten --> q er forelder til p og p hopper ned til høyre
-            else break;
-        }
+            Node<T> p = rot, q = null;                                      //Hjelpenoder
 
-        if (p == null) return false;                                    //Dersom p =  null --> Treet er tomt
-
-        if (p.venstre == null || p.høyre == null){                      //Hvis p.venstre eller p.høyre er lik null
-            Node<T> b = p.venstre != null ? p.venstre : p.høyre;        //en node som går til venstre hvis det ikke er en verdi til høyre
-            if (p == rot){                                              //Dersom p = roten
-                rot = b;                                                //Setter roten lik b.
-                rot.forelder = null;                                    // og rotens forelder til null
+            while (p != null) {                                              //Så lenge p ikke er null, så skal jeg...
+                int cmp = comp.compare(verdi, p.verdi);                    //1. sammenligne input med rot-verdien
+                if (cmp < 0) {
+                    q = p;
+                    p = p.venstre; //2. dersom verdi < roten --> q er forelder til p og p hopper ned til venstre
+                }
+                else if (cmp > 0) {
+                    q = p;
+                    p = p.høyre; //3. dersom verdi > roten --> q er forelder til p og p hopper ned til høyre
+                }
+                else break;
             }
-            else if (p == q.venstre) {                                  //Hvis p = q.venstre
-                q.venstre = b;                                          //Setter venstrebarnet til q lik b
-                if(b != null) b.forelder = q;                           //Hvis b ikke lik null --> b sin forelder er lik q
-            }
-            else q.høyre = b;                                           //Hvis ikke så er høyrebarnet til q = b.
-        }
-        else {
-            Node<T> s = p, r = p.høyre;                                 //Nye hjelpenoder
-            while (r.venstre != null){                                  //Så lenge venstrebarnet til r ikke lik null.
-                s = r;                                                  //s hopper en ned til høyre
-                r = r.venstre;                                          //r settes lik venstrebarnet til r
-            }
-            p.verdi = r.verdi;
 
-            if (s != p) s.venstre = r.høyre;                            //Dersom s ikke lik p, settes venstrebarnet til s lik høyrebarnet til r.
-            else s.høyre = r.høyre;                                     //Ellers skal høyrebarnet til s være lik høyrebarnet til r.
+            if (p == null) return false;                                   //Dersom p =  null --> Treet er tomt
+
+            if (p.venstre == null || p.høyre == null) {                    //Hvis p.venstre eller p.høyre er lik null
+                Node<T> b = p.venstre != null ? p.venstre : p.høyre;       //en node som går til venstre hvis det ikke er en verdi til høyre
+                if (p == rot) {                                            //Dersom p = roten
+                    rot = b;                                               //Setter roten lik b.
+                    if (b != null) {
+                        b.forelder = null;                               // og rotens forelder til null
+                    }
+                } else if (p == q.venstre) {                               //Hvis p = q.venstre
+                    q.venstre = b;                                         //Setter venstrebarnet til q lik b
+                    if (b != null)
+                        b.forelder = q;                                    //Hvis b ikke lik null --> b sin forelder er lik q
+                } else {
+                    q.høyre = b;                                           //Hvis ikke så er høyrebarnet til q = b.
+                    if (b != null) {
+                        b.forelder = q;
+                    }
+                }
+            } else {
+                Node<T> s = p, r = p.høyre;                                 //Nye hjelpenoder
+                while (r.venstre != null) {                                 //Så lenge venstrebarnet til r ikke lik null.
+                    s = r;                                                  //s hopper en ned til høyre
+                    r = r.venstre;                                          //r settes lik venstrebarnet til r
+                }
+                p.verdi = r.verdi;
+
+                if (s != p)
+                    s.venstre = r.høyre;                            //Dersom s ikke lik p, settes venstrebarnet til s lik høyrebarnet til r.
+                else
+                    s.høyre = r.høyre;                                     //Ellers skal høyrebarnet til s være lik høyrebarnet til r.
+            }
+            antall--;                                                       //Reduserer antall med en
+            return true;                                                    //returnerer true
         }
-        antall--;                                                       //Reduserer antall
-        return true;                                                    //returnerer true
+        return false;
 
     }
 
     public int fjernAlle(T verdi) {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        int counter = 0;
+
+        if (tom()) return 0;
+
+        if (verdi == null || !inneholder(verdi)) return 0;
+
+        while (inneholder(verdi)){
+            fjern(verdi);
+            counter++;
+            antall--;
+        }
+
+        return counter;
+
+       /*boolean fjernOK = true;
+        while (fjernOK){
+            if (fjern(verdi)){
+                counter++;
+                antall--;
+            }
+
+            else fjernOK = false;
+        }
+
+        return counter;*/
     }
-
-
 
     public void nullstill() {
-        throw new UnsupportedOperationException("Ikke kodet ennå!");
+        Node<T> p = førstePostorden(rot);
+        Node<T> f = p.forelder;
+        Node<T> q = nestePostorden(p);
+
+        if (p.venstre != null){
+            nullstill();
+            p.venstre = null;
+            //antall--;
+        }
+        if (p.høyre != null){
+            nullstill();
+            p.høyre = null;
+
+        }
+        p.verdi = null;
+        antall--;
+
+
+        /*if (tom()) return;
+
+
+        System.out.println("første: " + p + " neste: " + nestePostorden(p) + " forelder: " + f);
+        while (p != null) {
+            if (antall == 1 || p == rot) {
+            rot = null;
+            antall = 0;
+        }
+            p.høyre = null;
+            p.venstre = null;
+            antall--;
+        }
+        p.verdi = null;
+        p = q;
+        antall--;
+    }*/
+
+   /* //Lager en hjelpemetode
+    private void nullStill(Node<T> p){
+        if (!tom()){
+            if (p.venstre != null) nullStill(p.venstre);
+            if (p.høyre != null) nullStill(p.høyre);
+        }
+        antall--;*/
     }
     //// OPPGAVE 6 SLUTT //////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 } // ObligSBinTre

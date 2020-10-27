@@ -39,12 +39,12 @@ public class main {
         EksamenSBinTre<Integer> tre2 = new EksamenSBinTre<>(Comparator.naturalOrder());
         for (int verdi : a2) tre2.leggInn(verdi);
 
-        //System.out.println(tre2.fjernAlle(4)); // 3
-        //tre2.fjernAlle(7);
+        System.out.println(tre2.fjernAlle(4)); // 3
+        tre2.fjernAlle(7);
         System.out.println("Fjern: ");
         tre2.fjern(8);
         System.out.println(tre2.antall()); // 5
-        System.out.println(tre2);
+        System.out.println(tre2.toString());
 
         // [1, 2, 6, 9, 10] [10, 9, 6, 2, 1]
         // OBS: Hvis du ikke har gjort oppgave 4 kan du her bruke toString()
