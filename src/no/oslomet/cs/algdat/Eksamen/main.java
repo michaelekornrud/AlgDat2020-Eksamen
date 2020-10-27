@@ -45,6 +45,8 @@ public class main {
         tre2.fjern(8);
         System.out.println(tre2.antall()); // 5
         System.out.println(tre2.toString());
+        tre2.nullstill();
+        System.out.println("Antall etter nullstill: " + tre2.antall());
 
         // [1, 2, 6, 9, 10] [10, 9, 6, 2, 1]
         // OBS: Hvis du ikke har gjort oppgave 4 kan du her bruke toString()

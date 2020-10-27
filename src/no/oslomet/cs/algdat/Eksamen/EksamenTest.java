@@ -322,7 +322,6 @@ public class EksamenTest {
         }
 
         tre.nullstill();
-        System.out.println("Hei0");
         if (tre.antall() != 0) {
             antallFeil++;
             System.out.println("Oppgave 6m: Feil i nullstill() - antall er feil!");
@@ -344,7 +343,6 @@ public class EksamenTest {
                     ("Oppgave 6o: Skal ikke kaste unntak når et tomt tre nullstilles!");
         }
 
-/*
         try {
             if (tre.fjernAlle(0) != 0) {
                 antallFeil++;
@@ -387,16 +385,11 @@ public class EksamenTest {
         }
 
         tre = new EksamenSBinTre<>(Comparator.naturalOrder());
-
-        System.out.println("Hei");
         Random r = new Random();
         for (int i = 0; i < 500_000; i++) tre.leggInn(r.nextInt(1_000_000));
-        System.out.println("Hei1");
-
 
         long tid = System.currentTimeMillis();
         tre.nullstill();
-        System.out.println("Hei2");
         tid = System.currentTimeMillis() - tid;
 
         if (tid < 10) {
@@ -405,7 +398,7 @@ public class EksamenTest {
             System.out.println("nullstille hode og antall? Alle nodeverdier og");
             System.out.println("pekere i treet skal nulles!");
         }
-        assertEquals(antallFeil, 0);*/
+        assertEquals(antallFeil, 0);
     }  // slutt på Oppgave 5
 
 

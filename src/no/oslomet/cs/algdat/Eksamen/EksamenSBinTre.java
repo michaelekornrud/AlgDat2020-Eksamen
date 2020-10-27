@@ -277,7 +277,6 @@ public class EksamenSBinTre<T> {
         if (!tom() && inneholder(verdi)) { //Dersom verdi = null og treet ikke inneholder verdi
             if (verdi == null || !inneholder(verdi)) return false;
 
-
             Node<T> p = rot, q = null;                                      //Hjelpenoder
 
             while (p != null) {                                              //Så lenge p ikke er null, så skal jeg...
@@ -292,7 +291,6 @@ public class EksamenSBinTre<T> {
                 }
                 else break;
             }
-
             if (p == null) return false;                                   //Dersom p =  null --> Treet er tomt
 
             if (p.venstre == null || p.høyre == null) {                    //Hvis p.venstre eller p.høyre er lik null
@@ -335,9 +333,19 @@ public class EksamenSBinTre<T> {
     public int fjernAlle(T verdi) {
         int counter = 0;
 
+        Node<T> p = førstePostorden(rot);
         if (tom()) return 0;
 
-        if (verdi == null || !inneholder(verdi)) return 0;
+            while (p != null && verdi != null) {
+                fjern(verdi);
+                counter++;
+            }
+            antall--;
+            p = nestePostorden(p);
+
+        return counter;
+
+        /*if (verdi == null || !inneholder(verdi)) return 0;
 
         while (inneholder(verdi)){
             fjern(verdi);
@@ -345,7 +353,7 @@ public class EksamenSBinTre<T> {
             antall--;
         }
 
-        return counter;
+        return counter;*/
 
        /*boolean fjernOK = true;
         while (fjernOK){
