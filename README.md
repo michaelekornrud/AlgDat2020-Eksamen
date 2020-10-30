@@ -1,5 +1,6 @@
 # Mappeeksamen i Algoritmer og Datastrukturer Høst 2020
 
+* Kandidatnummer: 71
 
 
 # Krav til innlevering
@@ -16,7 +17,9 @@ Se oblig-tekst for alle krav, og husk spesielt på følgende:
 
 # Beskrivelse av oppgaveløsning (4-8 linjer/setninger per oppgave)
 
-Jeg har brukt git til å dokumentere arbeidet vårt. Jeg har 21 commits totalt, og hver logg-melding beskriver det jeg har gjort av endringer.
+Jeg har brukt git til å dokumentere arbeidet vårt. Jeg har 22 commits totalt, og hver logg-melding beskriver det jeg har gjort av endringer.
+
+* Kandidatnummer: 71
 
 * Oppgave 1: I oppgave 1 har jeg brukt programkode 5.2.3 a) og fant ut at jeg måtte implementere forelder ved å gi knytte 
              en variabel til forelder og en annen variabel til verdien. Disse variabelene oppdaterer seg etter hvert som 
